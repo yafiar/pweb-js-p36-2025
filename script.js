@@ -26,7 +26,7 @@ function initLogin() {
 
     btn.disabled = true;
     btn.textContent = 'Please wait…';
-    loading.hidden = false;
+    loading.hidden = true;
 
     try {
       const res = await fetch('https://dummyjson.com/auth/login', {
