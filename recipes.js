@@ -16,13 +16,13 @@ let debounceTimer;
 
 const firstName = localStorage.getItem("firstName");
 if (!firstName) {
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 }
 userGreeting.textContent = `Welcome, ${firstName}!`;
 
 logoutBtn.addEventListener("click", () => {
   localStorage.removeItem("firstName");
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 });
 
 async function fetchRecipes() {

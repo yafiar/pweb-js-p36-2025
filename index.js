@@ -1,59 +1,58 @@
-const form = document.getElementById("loginForm");
-const usernameInput = document.getElementById("username");
-const passwordInput = document.getElementById("password");
-const statusMessage = document.getElementById("statusMessage");
-const loginBtn = document.getElementById("loginBtn");
+// Simpler vanilla JS with redirect after success
 
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
+const $ = (sel) => document.querySelector(sel);
 
-  statusMessage.textContent = "";
-  statusMessage.className = "";
-
-  const username = usernameInput.value.trim();
-  const password = passwordInput.value.trim();
-
-  if (!username || !password) {
-    statusMessage.textContent = "Please fill in both fields.";
-    statusMessage.classList.add("error");
-    return;
-  }
-
-  try {
-    loginBtn.disabled = true;
-
-    const response = await fetch("https://dummyjson.com/users");
-    if (!response.ok) throw new Error("Unable to connect to server.");
-    const data = await response.json();
-
-    const user = data.users.find(u => u.username.toLowerCase() === username.toLowerCase());
-
-    if (!user) {
-      statusMessage.textContent = "User not found.";
-      statusMessage.className = "error";
-      loginBtn.disabled = false;
-      return;
-    }
-
-    if (user.password !== password) {
-      statusMessage.textContent = "Incorrect password.";
-      statusMessage.className = "error";
-      loginBtn.disabled = false;
-      return;
-    }
-
-    statusMessage.textContent = "Login successful! Redirecting...";
-    statusMessage.className = "success";
-
-    localStorage.setItem("firstName", user.firstName);
-
-    setTimeout(() => {
-      window.location.href = "recipes.html";
-    }, 1500);
-
-  } catch (error) {
-    statusMessage.textContent = "Error: " + error.message;
-    statusMessage.className = "error";
-    loginBtn.disabled = false;
-  }
+document.addEventListener('DOMContentLoaded', () => {
+  if (document.body.id === 'login') initLogin();
 });
+
+function initLogin() {
+  const form = $('#loginForm');
+  const username = $('#username');
+  const password = $('#password');
+  const btn = $('#loginBtn');
+  const error = $('#error');
+  const success = $('#success');
+  const loading = $('#loading');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    error.textContent = '';
+    success.textContent = '';
+
+    const u = (username.value || '').trim();
+    const p = (password.value || '');
+
+    if (!u) { error.textContent = 'Username tidak boleh kosong.'; return; }
+    if (!p) { error.textContent = 'Password tidak boleh kosong.'; return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Please wait…';
+    loading.hidden = false;
+
+    try {
+      const res = await fetch('https://dummyjson.com/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: u, password: p })
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'LOGIN_FAILED');
+
+      // Save firstName as required
+      try { localStorage.setItem('firstName', data.firstName || 'Friend'); } catch {}
+
+      success.textContent = `Login berhasil! Welcome, ${data.firstName || 'teman'}.`;
+
+      // >>> Redirect to recipes after a short delay
+      setTimeout(() => { window.location.href = 'recipes.html'; }, 900);
+    } catch (err) {
+      error.textContent = err?.message ? `Login gagal: ${err.message}` : 'Terjadi masalah koneksi ke API.';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Log in';
+      loading.hidden = true;
+    }
+  });
+}

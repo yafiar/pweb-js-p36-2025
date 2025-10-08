@@ -1,29 +1,42 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login</title>
-  <link rel="stylesheet" href="index.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Recipes Log In</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <div class="login-container">
-    <h1>Login Page</h1>
-    <form id="loginForm">
-      <div class="input">
-        <label for="username">Username</label>
-        <input type="text" id="username" placeholder="Enter your username" required />
-      </div>
+<body id="login">
+  <div class="container">
+    <img class="side-img" src="https://images.pexels.com/photos/1640772/pexels-photo-1640772.jpeg?cs=srgb&dl=appetizer-bowl-delicious-1640772.jpg&fm=jpg" alt="Food photo" loading="lazy" aria-hidden="true">
 
-      <div class="input">
-        <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Enter your password" required />
-      </div>
+    <main class="card">
+      <h1 class="logo">Recipes</h1>
+      <h2 class="form-title">Log in</h2>
 
-      <button type="submit" id="loginBtn">Login</button>
-      <p id="statusMessage"></p>
-    </form>
+      <form id="loginForm">
+        <div class="field">
+          <label for="username" class="sr-only">Username</label>
+          <input type="text" id="username" placeholder="Username" autocomplete="username" required>
+        </div>
+
+        <div class="field">
+          <label for="password" class="sr-only">Password</label>
+          <input type="password" id="password" placeholder="Password" autocomplete="current-password" required>
+        </div>
+
+        <button id="loginBtn" class="btn" type="submit">Log in</button>
+
+        <div class="info">
+          <span id="loading" class="loading" hidden>Loading…</span>
+          <p id="error" class="error" role="alert"></p>
+          <p id="success" class="success" role="status"></p>
+        </div>
+      </form>
+    </main>
   </div>
-  <script src="index.js"></script>
+
+  <footer class="foot">Demo only • Uses dummyjson.com</footer>
+  <script src="index.js" defer></script>
 </body>
 </html>
