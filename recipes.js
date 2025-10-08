@@ -14,20 +14,17 @@ let filteredRecipes = [];
 let visibleCount = 6;
 let debounceTimer;
 
-// Cek login
 const firstName = localStorage.getItem("firstName");
 if (!firstName) {
   window.location.href = "login.html";
 }
 userGreeting.textContent = `Welcome, ${firstName}!`;
 
-// Logout
 logoutBtn.addEventListener("click", () => {
   localStorage.removeItem("firstName");
   window.location.href = "login.html";
 });
 
-// Fetch data
 async function fetchRecipes() {
   try {
     const res = await fetch(API_URL);
@@ -42,7 +39,6 @@ async function fetchRecipes() {
   }
 }
 
-// Render cuisine filter
 function renderCuisineFilter() {
   const cuisines = [...new Set(recipes.map(r => r.cuisine))];
   cuisines.forEach(c => {
@@ -53,7 +49,6 @@ function renderCuisineFilter() {
   });
 }
 
-// Render recipes
 function renderRecipes() {
   container.innerHTML = "";
   const toDisplay = filteredRecipes.slice(0, visibleCount);
@@ -80,13 +75,11 @@ function renderRecipes() {
   showMoreBtn.style.display = visibleCount < filteredRecipes.length ? "block" : "none";
 }
 
-// Show More
 showMoreBtn.addEventListener("click", () => {
   visibleCount += 6;
   renderRecipes();
 });
 
-// Search (debounce)
 searchInput.addEventListener("input", () => {
   clearTimeout(debounceTimer);
   debounceTimer = setTimeout(() => {
@@ -102,7 +95,6 @@ searchInput.addEventListener("input", () => {
   }, 500);
 });
 
-// Filter by cuisine
 filterCuisine.addEventListener("change", () => {
   const val = filterCuisine.value;
   filteredRecipes = val ? recipes.filter(r => r.cuisine === val) : recipes;
@@ -110,7 +102,6 @@ filterCuisine.addEventListener("change", () => {
   renderRecipes();
 });
 
-// View full recipe
 function viewRecipe(id) {
   const recipe = recipes.find(r => r.id === id);
   modalBody.innerHTML = `
@@ -129,9 +120,7 @@ function viewRecipe(id) {
   modal.style.display = "block";
 }
 
-// Close modal
 closeModal.onclick = () => (modal.style.display = "none");
 window.onclick = e => { if (e.target === modal) modal.style.display = "none"; };
 
-// Init
 fetchRecipes();
