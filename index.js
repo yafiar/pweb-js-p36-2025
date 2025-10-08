@@ -1,5 +1,3 @@
-// Simpler vanilla JS with redirect after success
-
 const $ = (sel) => document.querySelector(sel);
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -40,12 +38,10 @@ function initLogin() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'LOGIN_FAILED');
 
-      // Save firstName as required
       try { localStorage.setItem('firstName', data.firstName || 'Friend'); } catch {}
 
-      success.textContent = `Login berhasil! Welcome, ${data.firstName || 'teman'}.`;
+      success.textContent = `Login successful! Welcome, ${data.firstName || 'teman'}.`;
 
-      // >>> Redirect to recipes after a short delay
       setTimeout(() => { window.location.href = 'recipes.html'; }, 900);
     } catch (err) {
       error.textContent = err?.message ? `Login gagal: ${err.message}` : 'Terjadi masalah koneksi ke API.';
