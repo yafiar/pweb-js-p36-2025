@@ -44,7 +44,7 @@ function initLogin() {
 
       setTimeout(() => { window.location.href = 'recipes.html'; }, 900);
     } catch (err) {
-      error.textContent = err?.message ? `Login gagal: ${err.message}` : 'Terjadi masalah koneksi ke API.';
+      error.textContent = err?.message ? `Login failed: ${err.message}` : 'Terjadi masalah koneksi ke API.';
     } finally {
       btn.disabled = false;
       btn.textContent = 'Log in';
